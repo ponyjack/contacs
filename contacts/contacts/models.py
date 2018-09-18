@@ -82,7 +82,6 @@ class Group(models.Model):
 
 @python_2_unicode_compatible
 class PhoneNumber(models.Model):
-    slug = models.SlugField(_("slug"), max_length=50, unique=True)
 
     name = models.CharField(_("name"), max_length=200)
     phone_number = models.CharField(_("number"), max_length=50)

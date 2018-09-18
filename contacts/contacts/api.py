@@ -7,6 +7,10 @@ logger = logging.getLogger(__name__)
 
 
 class PhoneNumberSerializer(serializers.ModelSerializer):
+    id = serializers.ModelField(
+        model_field=PhoneNumber._meta.get_field("id"), required=False
+    )
+
     class Meta:
         model = PhoneNumber
         exclude = ()
@@ -31,11 +35,15 @@ class PersonSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         phones = validated_data.pop("phones", [])
-        logger.info(PhoneNumber._meta.pk.name)
-        person = Person.objects.create_or_update(**validated_data)
-        logger.info(phones)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
         for p in phones:
-            logger.info(p.get("id", None))
+            pid = p.pop("id", None)
+            p.person = instance
+            PhoneNumber.objects.update_or_create(defaults=p, id=pid, person=instance)
+
+        return instance
 
 
 class PersonViewSet(viewsets.ModelViewSet):
@@ -43,7 +51,14 @@ class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
 
 
+class PhoneViewset(viewsets.ModelViewSet):
+    queryset = PhoneNumber.objects.all()
+    serializer_class = PhoneNumberSerializer
+
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r"person", PersonViewSet)
+router.register(r"person_phone", PhoneViewset)
 
+logging.info(router.urls)

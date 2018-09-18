@@ -135,8 +135,8 @@ LOGGING = {
         }
     },
     "loggers": {
-        "django": {"handlers": ["console"], "level": "DEBUG", "propagate": False},
-        "contacts": {"handlers": ["console"], "level": "DEBUG", "propagate": False},
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "contacts": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }
 

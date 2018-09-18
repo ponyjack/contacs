@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e82a294087f27fc383b986bdf96378dc37cb0eaf63bd67ae2fd2fe8bc5e1cc88"
+            "sha256": "69548338bab60b4a8fb98a0a98a9dde455dd172db88fe418605fcc0d95329c53"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -61,6 +61,14 @@
             ],
             "index": "pypi",
             "version": "==3.8.2"
+        },
+        "drf-nested-routers": {
+            "hashes": [
+                "sha256:52cbc4900e3ccd652bfb73017ff466d7b3e4d99838c912c250d75763b32669af",
+                "sha256:a4d97de1be554f5db3fd11c881f578d10a3e1324b6e99be1749a11c7248d3360"
+            ],
+            "index": "pypi",
+            "version": "==0.90.2"
         },
         "idna": {
             "hashes": [
@@ -133,7 +141,7 @@
                 "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
-            "markers": "python_version != '3.2.*' and python_version != '3.3.*' and python_version < '4' and python_version >= '2.6' and python_version != '3.0.*' and python_version != '3.1.*'",
+            "markers": "python_version < '4' and python_version >= '2.6' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.2.*' and python_version != '3.0.*'",
             "version": "==1.23"
         }
     },
@@ -172,7 +180,7 @@
                 "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
-            "markers": "python_version != '3.2.*' and python_version != '3.3.*' and python_version < '4' and python_version >= '2.6' and python_version != '3.0.*' and python_version != '3.1.*'",
+            "markers": "python_version < '4' and python_version >= '2.6' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.2.*' and python_version != '3.0.*'",
             "version": "==1.23"
         }
     }

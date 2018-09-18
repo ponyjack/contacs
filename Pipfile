@@ -11,6 +11,7 @@ django-filter = "*"
 django-contrib-comments = "*"
 pillow = "*"
 requests = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 requests = "*"

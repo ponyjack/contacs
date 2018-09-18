@@ -1,6 +1,7 @@
 import requests
 import pprint
 
+phones = [{"phone_number": "234234", "name": "123123", "slug": "12312"}]
 person = {
     "first_name": "123",
     "last_name": "123",
@@ -9,12 +10,10 @@ person = {
     "nickname": "123",
     "title": "123",
     "about": "123",
-    "id": 1,
-    "slug": "sdfdsf",
-    "phone_number": [{"phone_number": "12312313123"}],
+    "phones": phones,
 }
-data = {"name": "123", "nickname": "123", "about": "123", "persons": [person]}
-print(data)
+data = {"name": "123", "nickname": "123", "about": "123", "persons": [phones]}
+print(person)
 import json
 
 headers = {"Content-Type": "application/json"}
@@ -26,8 +25,8 @@ headers = {"Content-Type": "application/json"}
 
 # print(r.json())
 
-r = requests.post(
-    "http://127.0.0.1:8000/user/person/", data=json.dumps(person), headers=headers
+r = requests.put(
+    "http://127.0.0.1:8000/user/person/1/", data=json.dumps(person), headers=headers
 )
 print(r)
 

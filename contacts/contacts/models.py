@@ -29,8 +29,13 @@ class Person(models.Model):
     about = models.TextField(_("about"), blank=True)
     photo = models.ImageField(_("photo"), upload_to="contacts/person/", blank=True)
 
-    # user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True,
-    # null=True, verbose_name=_('user'))
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        verbose_name=_("user"),
+        on_delete=models.CASCADE,
+    )
 
     phone_number = GenericRelation("PhoneNumber")
     email_address = GenericRelation("EmailAddress")

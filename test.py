@@ -1,49 +1,73 @@
-import requests
-import pprint
-import uuid
-import json
+import pyexcel
+from xpinyin import Pinyin
+import re
+import glob
 
-print(uuid.uuid4())
+p = Pinyin()
 
 
-r = requests.post(
-    "http://127.0.0.1:8000/api-auth/login/",
-    data={"useranem": "admin", "passowrd": "admin"},
-)
-print(r.json())
-# phones = [{"phone_number": "999999", "name": "qqq"}]
-# person = {
-#     "first_name": "123",
-#     "last_name": "123",
-#     "middle_name": "123",
-#     "suffix": "123",
-#     "nickname": "123",
-#     "title": "123",
-#     "about": "123",
-#     "phones": phones,
-# }
-# data = {"name": "123", "nickname": "123", "about": "123", "persons": [phones]}
-# print(person)
-# import json
+def HandleDataToSql(table, path):
+    print(path)
+    sql = """create table %s(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"""
+    infos = pyexcel.get_dict(file_name=path, name_columns_by_row=0)
+    maxlength = {}
+    for k, v in infos.items():
+        maxlength[k] = len(max(v[4:], key=len))
+    maxlength
+    records = iter(pyexcel.get_records(file_name=path))
+    name = list(next(records).items())
+    require = list(next(records).items())
+    _ = next(records)
+    fieldtype = list(next(records).items())
 
-# headers = {"Content-Type": "application/json"}
-# r = requests.post(
-#     "http://127.0.0.1:8000/user/company/", data=json.dumps(data), headers=headers
-# )
-# print(r.url)
-# print(r)
+    tableinfo = []
+    for i, _ in enumerate(name):
+        if i == 0:
+            continue
+        info = {}
+        info["cname"] = name[i][0]
+        info["name"] = p.get_pinyin(name[i][0], "_")
 
-# print(r.json())
+        info["require"] = name[i][1]
+        info["ftype"] = fieldtype[i][1]
+        tableinfo.append(info)
 
-# r = requests.post(
-#     "http://127.0.0.1:8000/user/person/", data=json.dumps(person), headers=headers
-# )
-# print(r)
-# pprint.pprint(r.json())
+    slist = []
+    for v in tableinfo:
+        s = []
+        # if "关联" in v["ftype"]:
+        #     s.append("foreign key")
+        s.append(v["name"])
 
-# pprint.pprint(r.json())
-# phone = {"name": "!23123", "phone_number": "12312312", "person": 1}
-# r = requests.delete("http://127.0.0.1:8000/user/person_phone/4/", data=phone)
-# print(r)
+        if "字符" in v["ftype"]:
+            l = maxlength[v["cname"]] * 2
+            if l == 0:
+                l = 32
+            s.append("VARCHAR(%s)" % l)
+        elif "枚举" in v["ftype"]:
+            es = v["ftype"].replace("/", "")
+            if re.match(r"^[0-9]+$", es):
+                s.append("int")
+            else:
+                s.append("VARCHAR(32)")
+        else:
+            s.append("VARCHAR(32)")
 
-# pprint.pprint(r.json())
+        if "必填" in v["require"]:
+            s.append("not null")
+
+        if "唯一" in v["require"]:
+            s.append("UNIQUE")
+
+        slist.append(" ".join(s))
+
+    sql = sql % table
+    sql = sql + "\n" + ",\n    ".join(slist) + ");\n"
+    print(sql)
+
+
+for v in glob.glob("*.xlsx"):
+
+    HandleDataToSql("ss", v)
+

@@ -2,12 +2,13 @@ import pyexcel
 from xpinyin import Pinyin
 import re
 import glob
+import unicodedata
 
 p = Pinyin()
 
 
 def HandleDataToSql(table, path):
-    print(path)
+    # print(path)
     sql = """create table %s(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"""
     infos = pyexcel.get_dict(file_name=path, name_columns_by_row=0)
@@ -27,7 +28,11 @@ def HandleDataToSql(table, path):
             continue
         info = {}
         info["cname"] = name[i][0]
-        info["name"] = p.get_pinyin(name[i][0], "_")
+        cname = unicodedata.normalize("NFKD", name[i][0])
+        cname = re.sub(r"\([^\)]*\)", "", cname)
+        cname = cname.strip()
+        cname = cname.replace("-", "_")
+        info["name"] = p.get_pinyin(cname, "_")
 
         info["require"] = name[i][1]
         info["ftype"] = fieldtype[i][1]
@@ -67,7 +72,11 @@ def HandleDataToSql(table, path):
     print(sql)
 
 
-for v in glob.glob("*.xlsx"):
-
-    HandleDataToSql("ss", v)
+if __name__ == "__main__":
+    for v in glob.glob("*.xlsx"):
+        name = v.split("_")[0]
+        pname = p.get_pinyin(name, "")
+        pname = "jt_" + pname
+        HandleDataToSql(pname, v)
+    print("finish")
 

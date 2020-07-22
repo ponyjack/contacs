@@ -1,6 +1,5 @@
-
-create table dianchijia(
-    id INT NOT NULL AUTO_INCREMENT,
+create table jt_dianyuanjia(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 dian_yuan_jia_ming_cheng VARCHAR(82) not null UNIQUE,
     suo_shu_ji_fang VARCHAR(32) not null,
     dui_ying_di_ya_jiao_liu_pei_dian_ming_cheng VARCHAR(32) not null,
@@ -28,11 +27,10 @@ dian_yuan_jia_ming_cheng VARCHAR(82) not null UNIQUE,
     dai_wei_fu_ze_ren VARCHAR(32),
     yi_xian_dai_wei_ren_yuan VARCHAR(32),
     dian_yuan_jia_zhao_pian VARCHAR(32),
-    bei_zhu VARCHAR(32)}
+    bei_zhu VARCHAR(32));
 
-
-create table kongtiao(
-    id INT NOT NULL AUTO_INCREMENT,
+create table jt_kongdiao(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 kong_diao_ming_cheng VARCHAR(82) not null UNIQUE,
     suo_shu_ji_fang VARCHAR(32) not null,
     suo_shu_wu_li_zhan_dian_ming_cheng VARCHAR(32),
@@ -55,10 +53,10 @@ kong_diao_ming_cheng VARCHAR(82) not null UNIQUE,
     dai_wei_fu_ze_ren VARCHAR(32),
     yi_xian_dai_wei_ren_yuan VARCHAR(32),
     kong_diao_zhao_pian VARCHAR(32),
-    bei_zhu VARCHAR(32)}
-机房_2020-07-18.xlsx
-create table ss(
-    id INT NOT NULL AUTO_INCREMENT,
+    bei_zhu VARCHAR(32));
+
+create table jt_jifang(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 ji_fang_ming_cheng VARCHAR(86) not null UNIQUE,
     suo_shu_wu_li_zhan_dian_ming_cheng VARCHAR(32) not null,
     suo_shu_wu_ye_he_tong_bian_hao VARCHAR(32) not null,
@@ -70,9 +68,9 @@ ji_fang_ming_cheng VARCHAR(86) not null UNIQUE,
     suo_zai_lou_ceng VARCHAR(32) not null,
     lou_ceng_nei_wei_zhi VARCHAR(102),
     ji_fang_mian_ji VARCHAR(32) not null,
-    ji_fang_ceng_gao_（m） VARCHAR(32),
-    ji_fang_cheng_zhong_neng_li_（kN/m2） VARCHAR(32),
-    ji_fang_chan_quan_gui_shu_（D） VARCHAR(32) not null,
+    ji_fang_ceng_gao VARCHAR(32),
+    ji_fang_cheng_zhong_neng_li VARCHAR(32),
+    ji_fang_chan_quan_gui_shu VARCHAR(32) not null,
     shi_fou_gong_xiang VARCHAR(32) not null,
     gong_xiang_fang VARCHAR(16),
     suo_shu_tie_ta_gong_si_ji_fang_ming_cheng VARCHAR(50),
@@ -93,10 +91,10 @@ ji_fang_ming_cheng VARCHAR(86) not null UNIQUE,
     dai_wei_fu_ze_ren VARCHAR(32),
     yi_xian_dai_wei_ren_yuan VARCHAR(32),
     ji_fang_zhao_pian VARCHAR(32),
-    bei_zhu VARCHAR(32)}
-电池_2020-07-18.xlsx
-create table ss(
-    id INT NOT NULL AUTO_INCREMENT,
+    bei_zhu VARCHAR(32));
+
+create table jt_dianchi(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 dian_chi_zu_ming_cheng VARCHAR(74) not null UNIQUE,
     suo_shu_ji_fang VARCHAR(32) not null,
     jie_ru_dian_yuan_jia_ming_cheng VARCHAR(32) not null,
@@ -118,10 +116,10 @@ dian_chi_zu_ming_cheng VARCHAR(74) not null UNIQUE,
     dai_wei_fu_ze_ren VARCHAR(32),
     yi_xian_dai_wei_ren_yuan VARCHAR(32),
     dian_chi_zhao_pian VARCHAR(32),
-    bei_zhu VARCHAR(32)}
-物理站点_2020-07-18.xlsx
-create table ss(
-    id INT NOT NULL AUTO_INCREMENT,
+    bei_zhu VARCHAR(32));
+
+create table jt_wulizhandian(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 zhan_dian_wei_yi_bian_ma VARCHAR(32),
     wu_li_zhan_dian_ming_cheng VARCHAR(78) not null UNIQUE,
     chai_fen_guan_xi VARCHAR(32) not null,
@@ -139,7 +137,7 @@ zhan_dian_wei_yi_bian_ma VARCHAR(32),
     GPS_jing_du VARCHAR(32) not null,
     GPS_wei_du VARCHAR(32) not null,
     suo_shu_qu_xian VARCHAR(32),
-    suo_shu_qu_yu_（_xiang_zhen_） VARCHAR(32) not null,
+    suo_shu_qu_yu VARCHAR(32) not null,
     zhan_dian_di_zhi VARCHAR(32),
     wu_xian_dai_wei_wei_hu_qu_yu VARCHAR(32) not null,
     di_li_huan_jing VARCHAR(32),
@@ -170,10 +168,10 @@ zhan_dian_wei_yi_bian_ma VARCHAR(32),
     xia_dai_luo_ji_zhan_dian_shu_liang VARCHAR(32),
     xia_dai_BBU_shu_liang VARCHAR(32),
     xia_dai_RRU_shu_liang VARCHAR(32),
-    bei_zhu VARCHAR(32)}
-逻辑站点_2020-07-18.xlsx
-create table ss(
-    id INT NOT NULL AUTO_INCREMENT,
+    bei_zhu VARCHAR(32));
+
+create table jt_luojizhandian(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 luo_ji_zhan_dian_ming_cheng VARCHAR(110) not null UNIQUE,
     tian_kui_suo_zai_wu_li_zhan_dian_ming_cheng VARCHAR(32) not null,
     shi_yong_BBU_ming_cheng VARCHAR(32) not null,
@@ -184,7 +182,7 @@ luo_ji_zhan_dian_ming_cheng VARCHAR(110) not null UNIQUE,
     suo_shu_shang_ceng_she_bei VARCHAR(32),
     suo_shu_OMC VARCHAR(32),
     suo_shu_SGW VARCHAR(32),
-    suo_shu_SAE-GW VARCHAR(32),
+    suo_shu_SAE_GW VARCHAR(32),
     suo_shu_MMEPOOL VARCHAR(32),
     suo_shu_SGWPOOL VARCHAR(32),
     wang_guan_jie_kou_IP_di_zhi_lie_biao VARCHAR(32),
@@ -211,4 +209,6 @@ luo_ji_zhan_dian_ming_cheng VARCHAR(110) not null UNIQUE,
     dai_wei_gong_si VARCHAR(32),
     dai_wei_fu_ze_ren VARCHAR(32),
     yi_xian_dai_wei_ren_yuan VARCHAR(32),
-    bei_zhu VARCHAR(32)}
+    bei_zhu VARCHAR(32));
+
+finish

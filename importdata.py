@@ -20,7 +20,7 @@ def importdata():
         cursorclass=pymysql.cursors.DictCursor,
     )
 
-    for v in glob.glob("*.xlsx"):
+    for v in glob.glob("逻辑站点_2020-07-18.xlsx"):
         importjifang(connection, v)
 
 
@@ -42,6 +42,11 @@ def importjifang(mysql, datafile):
     tbname = p.get_pinyin(name, "")
     tbname = "jt_" + tbname
 
+    # records = pyexcel.get_dict(file_name="逻辑站点_2020-07-18.xlsx")
+
+    # s = collections.Counter([v.strip() for v in records["逻辑站点名称"]])
+
+    # print([k for k, v in s.items() if v > 1])
     # print(keys)
     index = 1
     with mysql.cursor() as cursor:
@@ -56,7 +61,7 @@ def importjifang(mysql, datafile):
                     keys.append(rkeys[k])
                     values.append(v)
             keysname = ", ".join(keys)
-            valuesdata = ", ".join(["'" + v + "'" for v in values])
+            valuesdata = ", ".join(["'" + v.strip() + "'" for v in values])
             sql = f"""INSERT INTO {tbname} ({keysname})
             VALUES
             ({valuesdata}) ;"""
@@ -80,8 +85,7 @@ def importjifang(mysql, datafile):
 if __name__ == "__main__":
     importdata()
 
-    # records = pyexcel.get_dict(file_name="物理站点_2020-07-18.xlsx")
-
-    # s = collections.Counter(records["物理站点名称"])
+    # records = pyexcel.get_dict(file_name="逻辑站点_2020-07-18.xlsx")
+    # s = collections.Counter([v.strip() for v in records["逻辑站点名称"]])
 
     # print([k for k, v in s.items() if v > 1])

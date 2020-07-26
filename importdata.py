@@ -1,6 +1,9 @@
 import pymysql
 import pyexcel
 from xpinyin import Pinyin
+import unicodedata
+import re
+import glob
 
 p = Pinyin()
 
@@ -15,12 +18,30 @@ def importdata():
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor,
     )
-    importjifang(connection)
+
+    for v in glob.glob("*.xlsx"):
+        importjifang(connection, v)
 
 
-def importjifang(mysql):
-    records = pyexcel.get_records(file_name="物理站点_2020-07-18.xlsx")
+def GetKey(key):
+    cname = unicodedata.normalize("NFKD", key)
+    cname = re.sub(r"\([^\)]*\)", "", cname)
+    cname = cname.strip()
+    cname = cname.replace("-", "_")
+    return p.get_pinyin(cname, "_")
 
+
+def importjifang(mysql, datafile):
+    records = pyexcel.get_records(file_name=datafile)
+    rkeys = {}
+    for k in records[0].keys():
+        rkeys[k] = GetKey(k)
+
+    name = datafile.split("_")[0]
+    tbname = p.get_pinyin(name, "")
+    tbname = "jt_" + tbname
+
+    # print(keys)
     for i, r in enumerate(records):
         if i < 4:
             continue
@@ -29,20 +50,19 @@ def importjifang(mysql):
         values = []
         for k, v in r.items():
             if v:
-                keys.append(p.get_pinyin(k, "_").replace("-", "_"))
+                keys.append(rkeys[k])
                 values.append(v)
         keysname = ", ".join(keys)
         valuesdata = ", ".join(["'" + v + "'" for v in values])
-        sql = f"""INSERT INTO 'wulizhandian' 
-        ({keysname}) 
-        VALUES 
-        ({valuesdata}) """
+        sql = f"""INSERT INTO {tbname} ({keysname})
+        VALUES
+        ({valuesdata}) ;"""
         print(sql)
         with mysql.cursor() as cursor:
             cursor.execute(sql)
         mysql.commit()
 
-        break
+    #     break
 
 
 if __name__ == "__main__":

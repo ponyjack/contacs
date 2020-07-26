@@ -4,6 +4,7 @@ from xpinyin import Pinyin
 import unicodedata
 import re
 import glob
+import collections
 
 p = Pinyin()
 
@@ -42,29 +43,45 @@ def importjifang(mysql, datafile):
     tbname = "jt_" + tbname
 
     # print(keys)
-    for i, r in enumerate(records):
-        if i < 4:
-            continue
+    index = 1
+    with mysql.cursor() as cursor:
+        for i, r in enumerate(records):
+            if i < 4:
+                continue
 
-        keys = []
-        values = []
-        for k, v in r.items():
-            if v:
-                keys.append(rkeys[k])
-                values.append(v)
-        keysname = ", ".join(keys)
-        valuesdata = ", ".join(["'" + v + "'" for v in values])
-        sql = f"""INSERT INTO {tbname} ({keysname})
-        VALUES
-        ({valuesdata}) ;"""
-        print(sql)
-        with mysql.cursor() as cursor:
+            keys = []
+            values = []
+            for k, v in r.items():
+                if v:
+                    keys.append(rkeys[k])
+                    values.append(v)
+            keysname = ", ".join(keys)
+            valuesdata = ", ".join(["'" + v + "'" for v in values])
+            sql = f"""INSERT INTO {tbname} ({keysname})
+            VALUES
+            ({valuesdata}) ;"""
+            # print(sql)
+            # with mysql.cursor() as cursor:
             cursor.execute(sql)
-        mysql.commit()
+            if index % 500 == 0:
+                try:
+                    mysql.commit()
+                    print(index)
+                except Exception as e:
+                    print(e)
+                    print(sql)
 
+            index += 1
+
+    mysql.commit()
     #     break
 
 
 if __name__ == "__main__":
     importdata()
 
+    # records = pyexcel.get_dict(file_name="物理站点_2020-07-18.xlsx")
+
+    # s = collections.Counter(records["物理站点名称"])
+
+    # print([k for k, v in s.items() if v > 1])

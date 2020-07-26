@@ -4,6 +4,7 @@ import re
 import glob
 import unicodedata
 import pprint
+import pymysql
 
 p = Pinyin()
 
@@ -97,14 +98,57 @@ def HandleDataToSql(table, path):
 
     sql = sql % table
     sql = sql + "\n" + ",\n    ".join(slist) + ");\n"
-    print(sql)
+    return sql
 
 
-if __name__ == "__main__":
+def DropTable():
+    connection = pymysql.connect(
+        host="cdb-i5kqhoo7.gz.tencentcdb.com",
+        port=10150,
+        user="hello",
+        password="hello_hello",
+        db="jeecg-boot",
+        charset="utf8mb4",
+        cursorclass=pymysql.cursors.DictCursor,
+    )
+
     for v in glob.glob("*.xlsx"):
         name = v.split("_")[0]
         pname = p.get_pinyin(name, "")
         pname = "jt_" + pname
-        HandleDataToSql(pname, v)
-        # break
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("DROP TABLE %s;" % pname)
+            connection.commit()
+        except Exception as e:
+            print(e)
+
+
+def CreateTable():
+    connection = pymysql.connect(
+        host="cdb-i5kqhoo7.gz.tencentcdb.com",
+        port=10150,
+        user="hello",
+        password="hello_hello",
+        db="jeecg-boot",
+        charset="utf8mb4",
+        cursorclass=pymysql.cursors.DictCursor,
+    )
+
+    for v in glob.glob("*.xlsx"):
+        name = v.split("_")[0]
+        pname = p.get_pinyin(name, "")
+        pname = "jt_" + pname
+        sql = HandleDataToSql(pname, v)
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(sql)
+            connection.commit()
+        except Exception as e:
+            print(e)
+
+
+if __name__ == "__main__":
+    DropTable()
+    CreateTable()
     print("finish")

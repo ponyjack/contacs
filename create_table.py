@@ -68,24 +68,24 @@ def HandleDataToSql(table, path):
         # if "关联" in v["ftype"]:
         #     s.append("foreign key")
         s.append(v["name"])
-        if "字符" in v["ftype"] or "文件" in v["ftype"]:
+        # if "字符" in v["ftype"] or "文件" in v["ftype"] or "关联" in v["ftype"]:
+        # l = maxlength[v["cname"]] * 2
+        # if l == 0:
+        #     l = 32
+        # s.append("VARCHAR(%s)" % l)
+        # elif "枚举" in v["ftype"]:
+        # es = v["ftype"].replace("/", "")
+        if v["cname"] in inttype:
+            s.append("INT")
+        elif v["cname"] in floatype:
+            s.append("FLOAT")
+        elif v["cname"] == "备注":
+            s.append("VARCHAR(256)")
+        else:
             l = maxlength[v["cname"]] * 2
             if l == 0:
                 l = 32
             s.append("VARCHAR(%s)" % l)
-        elif "枚举" in v["ftype"]:
-            es = v["ftype"].replace("/", "")
-            if v["cname"] in inttype:
-                s.append("INT")
-            elif v["cname"] in floatype:
-                s.append("FLOAT")
-            else:
-                s.append("VARCHAR(32)")
-        else:
-            if v["cname"] == "备注":
-                s.append("VARCHAR(256)")
-            else:
-                s.append("VARCHAR(32)")
 
         if "必填" in v["require"] and allowempty[v["cname"]]:
             s.append("not null")

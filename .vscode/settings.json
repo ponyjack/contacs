@@ -2,5 +2,5 @@
   // "python.pythonPath": "C:/Users/Admin/.virtualenvs/contacs-q5C111bc/Scripts/python.exe",
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
-  "python.pythonPath": "/usr/local/bin/python3"
+  "python.pythonPath": "E:\\python\\Python38\\python.exe"
 }

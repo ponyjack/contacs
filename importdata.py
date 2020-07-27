@@ -48,6 +48,9 @@ def importjifang(mysql, datafile):
 
     # print([k for k, v in s.items() if v > 1])
     # print(keys)
+    with mysql.cursor() as cursor:
+        cursor.execute("TRUNCATE TABLE %s;" % tbname)
+    mysql.commit()
     index = 1
     with mysql.cursor() as cursor:
         for i, r in enumerate(records):
@@ -67,8 +70,13 @@ def importjifang(mysql, datafile):
             ({valuesdata}) ;"""
             # print(sql)
             # with mysql.cursor() as cursor:
-            cursor.execute(sql)
-            if index % 500 == 0:
+            try:
+                cursor.execute(sql)
+            except Exception as e:
+                print(e)
+                print(sql)
+
+            if index % 10000 == 0:
                 try:
                     mysql.commit()
                     print(index)
@@ -85,7 +93,8 @@ def importjifang(mysql, datafile):
 if __name__ == "__main__":
     importdata()
 
-    # records = pyexcel.get_dict(file_name="逻辑站点_2020-07-18.xlsx")
-    # s = collections.Counter([v.strip() for v in records["逻辑站点名称"]])
+    # records = pyexcel.get_records(file_name="逻辑站点_2020-07-18.xlsx")
 
+    # s = collections.Counter([k["逻辑站点名称"] for k in records])
+    # print(s["珠海格力厂区九期商用AB座E-ZLW "])
     # print([k for k, v in s.items() if v > 1])
